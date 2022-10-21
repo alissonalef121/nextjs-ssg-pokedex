@@ -1,27 +1,12 @@
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { GetStaticProps } from 'react'
 
-export default function Home() {
-
-  const [pokemons, setPokemons] = useState([])
-
-  useEffect(() => {
-    fetch('https://pokeapi.co/api/v2/pokedex/2')
-    .then( res => res.json())
-    .then( data => {
-      if(!data) {
-        console.error(data)
-      }
-      
-      setPokemons(data.pokemon_entries)
-    })
-  }, [])
-
+export default function Home({ pokemons }) {
   return (
     <>
       <ul>
         {
-          pokemons.map( pokemon => (
+          pokemons.pokemon_entries.map( pokemon => (
             <li key={pokemon.pokemon_species.name}>
               <Link href={`/pokemon/${pokemon.pokemon_species.name}`}>
                   <a><span>{pokemon.pokemon_species.name}</span></a>
@@ -32,4 +17,15 @@ export default function Home() {
       </ul>
     </>
   )
+}
+
+export const getStaticProps = async () => {
+  const response = await fetch('https://pokeapi.co/api/v2/pokedex/2')
+  const data = await response.json()
+
+  return {
+    props: {
+      pokemons: data,
+    }
+  }
 }
