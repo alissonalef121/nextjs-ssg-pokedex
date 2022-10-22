@@ -1,7 +1,6 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 
-
 export default function Pokemon({ pokemon }) {
     const { isFallBack } = useRouter()
 
@@ -24,12 +23,18 @@ export const getStaticPaths = async () => {
   const data = await response.json()
 
   const paths = data.pokemon_entries.map( pokemon => {
-    return { params: { name: pokemon.pokemon_species.name } }
+    return {
+      params: {
+        name: pokemon.pokemon_species.name
+      }
+    }
+
+    console.log(paths)
   })
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   }
 }
 

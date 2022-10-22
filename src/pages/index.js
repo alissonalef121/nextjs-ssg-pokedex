@@ -4,6 +4,7 @@ import { GetStaticProps } from 'react'
 export default function Home({ pokemons }) {
   return (
     <>
+      <h1>Pokedex using static site generation</h1>
       <ul>
         {
           pokemons.pokemon_entries.map( pokemon => (
