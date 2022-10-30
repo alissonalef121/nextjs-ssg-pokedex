@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-export default function Pokemon({ pokemon }) {
+export default function Pokemon({ pokemon, prevPokemon, nextPokemon }) {
     const { isFallback} = useRouter()
 
     if (isFallback) {
@@ -27,7 +27,26 @@ export default function Pokemon({ pokemon }) {
           }
         </div>
 
-        <Link href="/">Return to home</Link>
+        <Link href="/">Return to home</Link><br>
+        </br>
+
+        <Link href={prevPokemon.species.name}>
+          <a>
+            <span>
+              <span>{prevPokemon.id} </span>
+              <span>{prevPokemon.species.name}</span>
+            </span>
+          </a>
+        </Link><br></br>
+
+        <Link href={nextPokemon.species.name}>
+          <a>
+            <span>
+              <span>{nextPokemon.id} </span>
+              <span>{nextPokemon.species.name}</span>
+            </span>
+          </a>
+        </Link>
       </>
     )
 }
@@ -55,10 +74,18 @@ export const getStaticProps = async context => {
 
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
   const data = await response.json()
+
+  const prevPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${data.id === 1 ? data.id : data.id-1}`)
+  const dataPrevPokemon = await prevPokemon.json()
+
+  const nextPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${data.id+1}`)
+  const dataNextPokemon = await nextPokemon.json()
   
   return {
     props: {
-      pokemon: data
+      pokemon: data,
+      prevPokemon: dataPrevPokemon,
+      nextPokemon: dataNextPokemon
     },
     revalidate: 86400 // 24 hours
   }
