@@ -4,11 +4,11 @@ import { GetStaticProps } from 'react'
 export default function Home({ pokemons }) {
   return (
     <>
-      <h1>Pokedex using static site generation</h1>
-      <ul>
+      <h1 className='text-violet-500 font-bold text-3xl'>Pokedex using static site generation</h1>
+      <ul className='grid gap-3 grid-cols-4 lg:grid-cols-12 mt-5'>
         {
           pokemons.pokemon_entries.map( pokemon => (
-            <li key={pokemon.pokemon_species.name}>
+            <li className='bg-gray-300 rounded px-3 py-1 text-gray-700 font-medium' key={pokemon.pokemon_species.name}>
               <Link href={`/pokemon/${pokemon.pokemon_species.name}`}>
                   <a><span>{pokemon.pokemon_species.name}</span></a>
               </Link>

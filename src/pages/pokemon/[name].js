@@ -7,46 +7,56 @@ export default function Pokemon({ pokemon, prevPokemon, nextPokemon }) {
     const { isFallback} = useRouter()
 
     if (isFallback) {
-      return <h1>loading...</h1>
+      return <h1 className='text-violet-500 font-bold text-3xl'>loading...</h1>
     }
 
     return (
       <>
-        <Image
-          src={pokemon.sprites.front_default}
-          width={300}
-          height={300}
-          alt={`${pokemon.species.name} Sprite`}/>
-        <h1>{pokemon.species.name}</h1>
-        <h2>{pokemon.id}</h2>
-        <div>
-          {
-            pokemon.types.map( type => (
-              <div key={type.type.name}>{type.type.name}</div>
-            ))
-          }
+        <div className='h-screen w-screen flex items-center justify-center'>
+          <div className='poke-card text-center bg-gray-200 rounded-xl p-5'>
+            <Image
+              src={pokemon.sprites.front_default}
+              width={300}
+              height={300}
+              alt={`${pokemon.species.name} Sprite`}/>
+            
+            <div className='flex gap-3 justify-center'>
+              <h1 className='text-violet-500 font-bold text-3xl'>{pokemon.species.name}</h1>
+              <h2 className='text-violet-500 font-medium text-3xl'>({pokemon.id})</h2>
+            </div>
+
+            <div className='flex gap-2 flex-wrap justify-center m-2'>
+              {
+                pokemon.types.map( type => (
+                  <div key={type.type.name} className={`rounded py-px px-3 bg-${type.type.name} bg-opacity-10 border-2 border-${type.type.name} text-${type.type.name}`}>{type.type.name}</div>
+                ))
+              }
+            </div>
+
+            <div className='flex flex-wrap justify-center gap-2 m-5'>
+              <Link href={prevPokemon.species.name}>
+                <a className='rounded py-px px-3 bg-violet-200 text-violet-500'>
+                  <span>
+                    <span>{prevPokemon.id} </span>
+                    <span>{prevPokemon.species.name}</span>
+                  </span>
+                </a>
+              </Link>
+              <Link href={nextPokemon.species.name}>
+                <a className='rounded py-px px-3 bg-violet-200 text-violet-500'>
+                  <span>
+                    <span>{nextPokemon.id} </span>
+                    <span>{nextPokemon.species.name}</span>
+                  </span>
+                </a>
+              </Link>
+            </div>
+
+            <Link href="/" className='text-violet-500'>
+              <a className='underline'>Return to home</a>
+            </Link>
+          </div>
         </div>
-
-        <Link href="/">Return to home</Link><br>
-        </br>
-
-        <Link href={prevPokemon.species.name}>
-          <a>
-            <span>
-              <span>{prevPokemon.id} </span>
-              <span>{prevPokemon.species.name}</span>
-            </span>
-          </a>
-        </Link><br></br>
-
-        <Link href={nextPokemon.species.name}>
-          <a>
-            <span>
-              <span>{nextPokemon.id} </span>
-              <span>{nextPokemon.species.name}</span>
-            </span>
-          </a>
-        </Link>
       </>
     )
 }
